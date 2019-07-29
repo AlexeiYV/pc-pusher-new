@@ -9,7 +9,7 @@
 - logical improvements;
 
 ## Settings API
-With new Settings API there is no need to edit javaScript fileanymore. The only file that needs to be edited is index.php.
+With new Settings API there is **no need to edit javaScript files anymore**. The only file that needs to be edited is **index.php**.
 All settings are represented by keys in this object:
 
 ```javascript
@@ -21,7 +21,7 @@ settingsProvider = {
 };
 ```
 
-There are 4 main settings. You can find first three values in PC, and last one is delay before request popup occurs.
+There are 4 main settings. You can find **first three values in PC**, and last one is delay before request popup occurs.
 
 ## Callbacks API
 
