@@ -9,7 +9,11 @@ var domainName = "520:-bfd9pONVmb8hP87TzYO8xVlT78",
 var publicKey =
     "BJWjSY/hjMmTDlegmhTvH6PYsTbxkM+vPbuyHIQApVUpUZfV74pdZWYJ1qWOrMP0u1p9PScxCypZg0R+qp2ScsU=";
 
-
+/*******************************
+ * Utilities 
+ ********************************/
+var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
+    serviceWorkerSupport = navigator.serviceWorker;
 
 /*******************************
  * API enter point
@@ -42,7 +46,7 @@ var callbackProvider = {
      ********************************/
     function run() {
         /* checks if browser support serviceWorker */
-        if (!isSafari || !serviceWorkerSupport) {
+        if (isSafari || !serviceWorkerSupport) {
             return notifyRequest({
                 domain: domainName,
                 event: "subscriptionDenied",
@@ -75,7 +79,7 @@ var callbackProvider = {
                         });
                 }
 
-                if (Notification.permission == 'deafult') {
+                if (Notification.permission == 'default') {
                     setTimeout(getNotificationPermission, requestDelay);
                 }
             })
@@ -183,12 +187,5 @@ var callbackProvider = {
                 sendSubscription(subscription.toJSON()).then(callback);
             });
     }
-
-
-    /*******************************
-     * Utilities 
-     ********************************/
-    var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
-        serviceWorkerSupport = navigator.serviceWorker;
 
 }();
