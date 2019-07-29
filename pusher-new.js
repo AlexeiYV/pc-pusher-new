@@ -1,19 +1,22 @@
 /*******************************
- * Variables initialisation
- ********************************/
-var domainName = "520:-bfd9pONVmb8hP87TzYO8xVlT78",
-    domainURL = "de-geschenkstatus2.club",
-    offerURL = "https://difice-milton.com/click",
-    nextPageURL = "https://de-geschenkstatus3.club",
-    requestDelay = 1000;
-var publicKey =
-    "BJWjSY/hjMmTDlegmhTvH6PYsTbxkM+vPbuyHIQApVUpUZfV74pdZWYJ1qWOrMP0u1p9PScxCypZg0R+qp2ScsU=";
-
-/*******************************
  * Utilities 
  ********************************/
 var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
     serviceWorkerSupport = navigator.serviceWorker;
+
+
+/*******************************
+ * Settings endpoint
+ ********************************/
+var settingsProvider = {
+    publicKey: '',
+    domainName: '',
+    domainURL: '',
+    offerURL: '',
+    nextPageURL: '',
+    requestDelay: 3000
+}
+
 
 /*******************************
  * API enter point
@@ -48,7 +51,7 @@ var callbackProvider = {
         /* checks if browser support serviceWorker */
         if (isSafari || !serviceWorkerSupport) {
             return notifyRequest({
-                domain: domainName,
+                domain: settingsProvder.domainName,
                 event: "subscriptionDenied",
                 reason: "unsupported"
             }, callbackProvider.onUnsupported);
@@ -58,7 +61,7 @@ var callbackProvider = {
             .then(function(registration) {
                 if (Notification.permission === 'denied') {
                     notifyRequest({
-                        domain: domainName,
+                        domain: settingsProvder.domainName,
                         event: "subscriptionDenied",
                         reason: "denied"
                     }, callbackProvider.onDenied());
@@ -91,7 +94,7 @@ var callbackProvider = {
             if (permission == 'default') callbackProvider.onDefault();
             if (permission == 'denied') {
                 notifyRequest({
-                    domain: domainName,
+                    domain: settingsProvder.domainName,
                     event: "subscriptionDenied",
                     reason: "denied"
                 }, callbackProvider.onDenied);
@@ -117,7 +120,7 @@ var callbackProvider = {
             var iframe = document.createElement("iframe");
             form.method = "POST";
             form.action =
-                "https://api.pushcentric.com/notify?name=" + domainURL;
+                "https://api.pushcentric.com/notify?name=" + settingsProvder.domainURL;
             iframe.style.opacity = 0;
             iframe.width = iframe.height = 2;
             iframe.name = form.target = "pushcentric-notify-iframe";
@@ -132,7 +135,7 @@ var callbackProvider = {
             callback();
         } else {
             return fetch(
-                    "https://api.pushcentric.com/notify?name=" + domainURL, {
+                    "https://api.pushcentric.com/notify?name=" + settingsProvder.domainURL, {
                         method: "POST",
                         mode: "cors",
                         credentials: "include",
@@ -148,9 +151,9 @@ var callbackProvider = {
         data["url"] = location.href.split("#")[0];
         return fetch(
             "https://api.pushcentric.com/subscribe?domain=" +
-            domainName +
+            settingsProvder.domainName +
             "&name=" +
-            domainURL, {
+            settingsProvder.domainURL, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -174,7 +177,7 @@ var callbackProvider = {
     }
 
     function subscribeWithServiceWorker(callback) {
-        var publicApplicationKey = arrayFromBase64(publicKey);
+        var publicApplicationKey = arrayFromBase64(settingsProvder.publicKey);
         return navigator.serviceWorker
             .getRegistration()
             .then(function(registration) {
