@@ -1,1 +1,0 @@
-importScripts('https://api.pushcentric.com/static/service-worker.js');

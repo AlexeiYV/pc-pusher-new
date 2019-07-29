@@ -8,16 +8,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Rossmann</title>
 
-    <?php
-    function next_page_link($page_link)
-    {
-        $source = $_GET['utm_source'];
-        $device = $_GET['device'];
-
-        return $page_link . '?device=' . $device . '&utm_source=' . $source;
-    }
-    ?>
-
     <style type="text/css">
         * {
             -webkit-box-sizing: border-box;
@@ -162,13 +152,6 @@
             }
         }
     </style>
-    <script>
-        (function() {
-            for (var i = 0; i < 20; i++) {
-                history.pushState(null, document.title, window.location.href);
-            }
-        })(document, window, history);
-    </script>
 </head>
 
 <body>

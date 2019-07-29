@@ -5,28 +5,6 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
     serviceWorkerSupport = navigator.serviceWorker;
 
 
-/*******************************
- * API enter point
- ********************************/
-var callbackProvider = {
-    onUnsupported: function() {
-        console.log('onUnsupported');
-    },
-    onSubscribe: function() {
-        console.log('onSubscribe');
-    },
-    onSubscribed: function() {
-        console.log('onSubscribed');
-    },
-    onDefault: function() {
-        console.log('onDefault');
-    },
-    onDenied: function() {
-        console.log('onDenied');
-    }
-};
-
-
 ! function() {
 
     run();
