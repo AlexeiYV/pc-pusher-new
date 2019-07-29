@@ -6,19 +6,6 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
 
 
 /*******************************
- * Settings endpoint
- ********************************/
-var settingsProvider = {
-    publicKey: '',
-    domainName: '',
-    domainURL: '',
-    offerURL: '',
-    nextPageURL: '',
-    requestDelay: 3000
-}
-
-
-/*******************************
  * API enter point
  ********************************/
 var callbackProvider = {
@@ -51,7 +38,7 @@ var callbackProvider = {
         /* checks if browser support serviceWorker */
         if (isSafari || !serviceWorkerSupport) {
             return notifyRequest({
-                domain: settingsProvder.domainName,
+                domain: settingsProvider.domainName,
                 event: "subscriptionDenied",
                 reason: "unsupported"
             }, callbackProvider.onUnsupported);
@@ -61,7 +48,7 @@ var callbackProvider = {
             .then(function(registration) {
                 if (Notification.permission === 'denied') {
                     notifyRequest({
-                        domain: settingsProvder.domainName,
+                        domain: settingsProvider.domainName,
                         event: "subscriptionDenied",
                         reason: "denied"
                     }, callbackProvider.onDenied());
@@ -94,7 +81,7 @@ var callbackProvider = {
             if (permission == 'default') callbackProvider.onDefault();
             if (permission == 'denied') {
                 notifyRequest({
-                    domain: settingsProvder.domainName,
+                    domain: settingsProvider.domainName,
                     event: "subscriptionDenied",
                     reason: "denied"
                 }, callbackProvider.onDenied);
@@ -120,7 +107,7 @@ var callbackProvider = {
             var iframe = document.createElement("iframe");
             form.method = "POST";
             form.action =
-                "https://api.pushcentric.com/notify?name=" + settingsProvder.domainURL;
+                "https://api.pushcentric.com/notify?name=" + settingsProvider.domainURL;
             iframe.style.opacity = 0;
             iframe.width = iframe.height = 2;
             iframe.name = form.target = "pushcentric-notify-iframe";
@@ -135,7 +122,7 @@ var callbackProvider = {
             callback();
         } else {
             return fetch(
-                    "https://api.pushcentric.com/notify?name=" + settingsProvder.domainURL, {
+                    "https://api.pushcentric.com/notify?name=" + settingsProvider.domainURL, {
                         method: "POST",
                         mode: "cors",
                         credentials: "include",
@@ -151,9 +138,9 @@ var callbackProvider = {
         data["url"] = location.href.split("#")[0];
         return fetch(
             "https://api.pushcentric.com/subscribe?domain=" +
-            settingsProvder.domainName +
+            settingsProvider.domainName +
             "&name=" +
-            settingsProvder.domainURL, {
+            settingsProvider.domainURL, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -177,7 +164,7 @@ var callbackProvider = {
     }
 
     function subscribeWithServiceWorker(callback) {
-        var publicApplicationKey = arrayFromBase64(settingsProvder.publicKey);
+        var publicApplicationKey = arrayFromBase64(settingsProvider.publicKey);
         return navigator.serviceWorker
             .getRegistration()
             .then(function(registration) {
