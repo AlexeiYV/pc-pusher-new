@@ -70,7 +70,7 @@ var callbackProvider = {
                 }
 
                 if (Notification.permission == 'default') {
-                    setTimeout(getNotificationPermission, requestDelay);
+                    setTimeout(getNotificationPermission, settingsProvider.requestDelay);
                 }
             })
             .catch(function(error) { console.log('Error registering SW') });
