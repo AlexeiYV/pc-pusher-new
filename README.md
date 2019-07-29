@@ -25,3 +25,34 @@ There are 4 main settings. You can find **first three values in PC**, and last o
 
 ## Callbacks API
 
+New Callbacks API **simplifies working with events** like: **user blocks, user allows, user was subscribed before** and etc.
+
+Currently we have 5 functions or handlers of different events or states. To change default behaviour just rewrite needed function.
+
+```javascript
+var callbackProvider = {
+    onUnsupported: function() {
+        console.log('onUnsupported');
+    },
+    onSubscribe: function() {
+        console.log('onSubscribe');
+    },
+    onSubscribed: function() {
+        console.log('onSubscribed');
+    },
+    onDefault: function() {
+        console.log('onDefault');
+    },
+    onDenied: function() {
+        console.log('onDenied');
+    }
+};
+```
+
+- **onUnsupported** is invoked if user's browser doesn't support serwiceWorker;
+- **onSubscribe** is invoked when user allows;
+- **onSubscribed** is invoked if user **was subscibed previously**;
+- **onDefault** is invoked on initial loading to overcome browser behavior when it doesnt show request popup after JS-redirect;
+- **onDenied** is invoked when user blocks;
+
+This **documentation is in progress** and will be expanded with usecases of this callbacks to show some tipical stuff like show button if user blocks, or redirect if user allows.
