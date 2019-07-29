@@ -49,7 +49,7 @@ var callbackProvider = {
 };
 ```
 
-- **onUnsupported** is invoked if user's browser doesn't support serwiceWorker;
+- **onUnsupported** is invoked if user's browser doesn't support serviceWorker;
 - **onSubscribe** is invoked when user allows;
 - **onSubscribed** is invoked if user **was subscibed previously**;
 - **onDefault** is invoked on initial loading to overcome browser behavior when it doesnt show request popup after JS-redirect;
