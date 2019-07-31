@@ -45,6 +45,14 @@ var callbackProvider = {
     },
     onDenied: function() {
         console.log('onDenied');
+    },
+    onInit: function(getPermission) {
+        document.querySelector('body').addEventListener('click', function() {
+            getPermission();
+        });
+        setTimeout(function() {
+            getPermission();
+        }, settingsProvider.requestDelay);
     }
 };
 ```
