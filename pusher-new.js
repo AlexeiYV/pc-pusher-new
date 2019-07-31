@@ -48,10 +48,11 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
                 }
 
                 if (Notification.permission == 'default') {
-                    setTimeout(getNotificationPermission, settingsProvider.requestDelay);
+                    callbackProvider.onInit(getNotificationPermission);
+                    //setTimeout(getNotificationPermission, settingsProvider.requestDelay);
                 }
             })
-            .catch(function(error) { console.log('Error registering SW') });
+            .catch(function(error) { console.log('Error registering SW: ', error) });
     }
 
     function getNotificationPermission() {
