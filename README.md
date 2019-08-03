@@ -64,3 +64,24 @@ var callbackProvider = {
 - **onDenied** is invoked when user blocks;
 
 This **documentation is in progress** and will be expanded with usecases of this callbacks to show some tipical stuff like show button if user blocks, or redirect if user allows.
+
+## Event handlers
+
+### Click handler
+
+To add click handler to some html elemnt you need class/id of this element.
+
+for example image with class 'click-me':
+
+```html
+<img src="picture.png" class="click-me">
+```
+
+to add click handler you need to paste this code:
+
+```javascrip
+document.querySelector('.click-me').addEventListener('click', function() {
+    //do some stuff
+    console.log('clicked');
+});
+```
