@@ -99,24 +99,18 @@ if (document.readyState == 'complete')
 
 to this
 ```javascript
+function addCustomHandler(eventType, eventTarget) {
+    var target = document.querySelector(eventTarget);
+    if (target) {    
+        .addEventListener(eventType, function(e) {
+            maybeAskForNotification();
+        });
+    }
+}
 if (document.readyState == 'complete')
-    ! function() {
-        document.querySelector('.click-me').addEventListener('click', function(e) {
-            //do some stuff
-            console.log('clicked');
-        
-            // if element is link
-            e.preventDefault();
-        });
-    }()
-  else
+    addCustomHandler('click', 'CLASS/ID');    
+else
     window.addEventListener('load', function() {
-        document.querySelector('.click-me').addEventListener('click', function(e) {
-            //do some stuff
-            console.log('clicked');
-        
-            // if element is link
-            e.preventDefault();
-        });
+        addCustomHandler('click', 'CLASS/ID');
     });
 ```
