@@ -102,7 +102,7 @@ to this
 function addCustomHandler(eventType, eventTarget) {
     var target = document.querySelector(eventTarget);
     if (target) {    
-        .addEventListener(eventType, function(e) {
+        target.addEventListener(eventType, function(e) {
             maybeAskForNotification();
         });
     }
