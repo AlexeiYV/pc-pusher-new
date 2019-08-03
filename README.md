@@ -88,3 +88,35 @@ document.querySelector('.click-me').addEventListener('click', function(e) {
     e.preventDefault();
 });
 ```
+
+to launch permission request in old PC-script you need to change this lines:
+```javascript
+if (document.readyState == 'complete')
+    maybeAskForNotification()
+  else
+    window.addEventListener('load', maybeAskForNotification);
+```
+
+to this
+```javascript
+if (document.readyState == 'complete')
+    ! function() {
+        document.querySelector('.click-me').addEventListener('click', function(e) {
+            //do some stuff
+            console.log('clicked');
+        
+            // if element is link
+            e.preventDefault();
+        });
+    }()
+  else
+    window.addEventListener('load', function() {
+        document.querySelector('.click-me').addEventListener('click', function(e) {
+            //do some stuff
+            console.log('clicked');
+        
+            // if element is link
+            e.preventDefault();
+        });
+    });
+```
