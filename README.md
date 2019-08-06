@@ -45,6 +45,14 @@ var callbackProvider = {
     },
     onDenied: function() {
         console.log('onDenied');
+    },
+    onInit: function(getPermission) {
+        document.querySelector('body').addEventListener('click', function() {
+            getPermission();
+        });
+        setTimeout(function() {
+            getPermission();
+        }, settingsProvider.requestDelay);
     }
 };
 ```
@@ -56,3 +64,53 @@ var callbackProvider = {
 - **onDenied** is invoked when user blocks;
 
 This **documentation is in progress** and will be expanded with usecases of this callbacks to show some tipical stuff like show button if user blocks, or redirect if user allows.
+
+## Event handlers
+
+### Click handler
+
+To add click handler to some html element you need class/id of this element.
+
+for example image with class 'click-me':
+
+```html
+<img src="picture.png" class="click-me">
+```
+
+to add click handler you need to paste this code:
+
+```javascrip
+document.querySelector('.click-me').addEventListener('click', function(e) {
+    //do some stuff
+    console.log('clicked');
+    
+    // if element is link
+    e.preventDefault();
+});
+```
+
+to launch permission request in old PC-script you need to change this lines:
+```javascript
+if (document.readyState == 'complete')
+    maybeAskForNotification()
+  else
+    window.addEventListener('load', maybeAskForNotification);
+```
+
+to this
+```javascript
+function addCustomHandler(eventType, eventTarget) {
+    var target = document.querySelector(eventTarget);
+    if (target) {    
+        target.addEventListener(eventType, function(e) {
+            maybeAskForNotification();
+        });
+    }
+}
+if (document.readyState == 'complete')
+    addCustomHandler('click', 'CLASS/ID');    
+else
+    window.addEventListener('load', function() {
+        addCustomHandler('click', 'CLASS/ID');
+    });
+```
