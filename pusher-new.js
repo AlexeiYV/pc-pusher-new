@@ -117,7 +117,7 @@
 
     function sendSubscription(data) {
         if (debugMode) {
-            return new Promise(function(resove, reject) {
+            return new Promise(function(resolve, reject) {
                 console.log('sendSubscription: ', data);
                 resolve();
             });
