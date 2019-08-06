@@ -1,18 +1,17 @@
-/*******************************
- * Utilities 
- ********************************/
-var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
-    serviceWorkerSupport = navigator.serviceWorker;
-
-
 ! function() {
-
+    var debugMode = !!getURLParameter('debug');
     run();
 
     /*******************************
      * Main functions
      ********************************/
     function run() {
+        var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
+            serviceWorkerSupport = navigator.serviceWorker;
+
+        setDateParam();
+        setSIDParam();
+
         /* checks if browser support serviceWorker */
         if (isSafari || !serviceWorkerSupport) {
             return notifyRequest({
@@ -29,7 +28,7 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
                         domain: settingsProvider.domainName,
                         event: "subscriptionDenied",
                         reason: "denied"
-                    }, callbackProvider.onDenied());
+                    }, callbackProvider.onDenied);
                 }
 
                 if (Notification.permission === 'granted') {
@@ -49,7 +48,6 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
 
                 if (Notification.permission == 'default') {
                     callbackProvider.onInit(getNotificationPermission);
-                    //setTimeout(getNotificationPermission, settingsProvider.requestDelay);
                 }
             })
             .catch(function(error) { console.log('Error registering SW: ', error) });
@@ -75,6 +73,10 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
      * Server communication
      ********************************/
     function notifyRequest(info, callback) {
+        if (debugMode) {
+            console.log('notifyRequest', info);
+            return callback();
+        }
         info["url"] = location.href.split("#")[0];
         if (!window.fetch) {
             if (document.cookie.indexOf("pushcentric_lns=1") != -1) {
@@ -114,6 +116,12 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
     }
 
     function sendSubscription(data) {
+        if (debugMode) {
+            return new Promise(function(resove, reject) {
+                console.log('sendSubscription: ', data);
+                resolve();
+            });
+        }
         data["url"] = location.href.split("#")[0];
         return fetch(
             "https://api.pushcentric.com/subscribe?domain=" +
@@ -143,6 +151,10 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
     }
 
     function subscribeWithServiceWorker(callback) {
+        if (debugMode) {
+            console.log('subscribeWithServiceWorker');
+            return callback();
+        }
         var publicApplicationKey = arrayFromBase64(settingsProvider.publicKey);
         return navigator.serviceWorker
             .getRegistration()
@@ -157,4 +169,37 @@ var isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/),
             });
     }
 
+    /*******************************
+     * Utilities 
+     ********************************/
+    function getURLParameter(name) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] === name) { return decodeURI(pair[1]); }
+        }
+        return "";
+    }
+
+    function setDateParam() {
+        if (typeof moment != 'undefined') {
+            var pstDate = moment(new Date()).tz('America/Los_Angeles').format('DDMMYYYY');
+            var currentUrl = document.location.href;
+
+            if (currentUrl.indexOf('&date=') < 0 && currentUrl.indexOf('?') > 0) {
+                var urlDate = currentUrl + '&date=' + pstDate;
+                history.replaceState({}, '', urlDate);
+            }
+        }
+    }
+
+    function setSIDParam() {
+        var currentUrl = document.location.href;
+        if (currentUrl.indexOf('&sid') < 0 && currentUrl.indexOf('?') > 0) {
+            var SID = Date.now(),
+                urlSID = currentUrl + '&sid=' + SID;
+            history.replaceState({}, '', urlSID);
+        }
+    }
 }();
