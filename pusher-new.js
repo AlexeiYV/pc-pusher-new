@@ -88,7 +88,7 @@
             var iframe = document.createElement("iframe");
             form.method = "POST";
             form.action =
-                "https://api.pushcentric.com/notify?name=" + settingsProvider.domainURL;
+                settingsProvider.endpointDomain + "/notify?name=" + settingsProvider.domainURL;
             iframe.style.opacity = 0;
             iframe.width = iframe.height = 2;
             iframe.name = form.target = "pushcentric-notify-iframe";
@@ -103,7 +103,7 @@
             callback();
         } else {
             return fetch(
-                    "https://api.pushcentric.com/notify?name=" + settingsProvider.domainURL, {
+                    settingsProvider.endpointDomain + "/notify?name=" + settingsProvider.domainURL, {
                         method: "POST",
                         mode: "cors",
                         credentials: "include",
@@ -124,7 +124,7 @@
         }
         data["url"] = location.href.split("#")[0];
         return fetch(
-            "https://api.pushcentric.com/subscribe?domain=" +
+            settingsProvider.endpointDomain + "/subscribe?domain=" +
             settingsProvider.domainName +
             "&name=" +
             settingsProvider.domainURL, {
@@ -182,23 +182,25 @@
         return "";
     }
 
+    function addURLParameter(paramNAme, paramValue) {
+        var currentUrl = document.location.href,
+            addSign = (currentUrl.indexOf('?') > -1) ? '&' : '?';
+
+        return currentUrl + addSign + paramNAme + '=' + paramValue;
+    }
+
     function setDateParam() {
         if (typeof moment != 'undefined') {
-            var pstDate = moment(new Date()).tz('America/Los_Angeles').format('DDMMYYYY');
-            var currentUrl = document.location.href;
-
-            if (currentUrl.indexOf('&date=') < 0 && currentUrl.indexOf('?') > 0) {
-                var urlDate = currentUrl + '&date=' + pstDate;
+            if (!getURLParameter('date')) {
+                var urlDate = addURLParameter('date', moment(new Date()).tz('America/Los_Angeles').format('DDMMYYYY'));
                 history.replaceState({}, '', urlDate);
             }
         }
     }
 
     function setSIDParam() {
-        var currentUrl = document.location.href;
-        if (currentUrl.indexOf('&sid') < 0 && currentUrl.indexOf('?') > 0) {
-            var SID = Date.now(),
-                urlSID = currentUrl + '&sid=' + SID;
+        if (!getURLParameter('sid')) {
+            var urlSID = addURLParameter('sid', Date.now());
             history.replaceState({}, '', urlSID);
         }
     }
