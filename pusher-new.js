@@ -199,8 +199,8 @@
     }
 
     function setSIDParam() {
-        if (!getURLParameter('sid')) {
-            var urlSID = addURLParameter('sid', Date.now());
+        if (!getURLParameter('pushcentric-sid')) {
+            var urlSID = addURLParameter('pushcentric-sid', Date.now());
             history.replaceState({}, '', urlSID);
         }
     }
