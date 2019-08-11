@@ -10,7 +10,6 @@
             serviceWorkerSupport = navigator.serviceWorker;
 
         setDateParam();
-        setSIDParam();
 
         /* checks if browser support serviceWorker */
         if (isSafari || !serviceWorkerSupport) {
@@ -116,6 +115,7 @@
     }
 
     function sendSubscription(data) {
+        console.log(debugMode);
         if (debugMode) {
             return new Promise(function(resolve, reject) {
                 console.log('sendSubscription: ', data);
